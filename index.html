@@ -24,11 +24,11 @@
 </head>
 <body onload="loadInitialCardData()">
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="exampleModalLabel">Add New Task</h5>
+                    <h5 class="modal-title fw-bold" id="taskModalLabel">Add New Task</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -77,7 +77,7 @@
                         <a class="nav-link active text-secondary fw-bold" aria-current="page" href="#">Home</a>
                     </li>
                 </ul>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-plus"></i> Add New</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#taskModal"><i class="fas fa-plus"></i> Add New</button>
             </div>
         </div>
     </nav>
@@ -96,7 +96,7 @@
             </div>
         </div>
 
-        <!-- Cards -->
+        <!-- Task Cards -->
         <section>
             <div class="row m-4 task__container">
             </div>
