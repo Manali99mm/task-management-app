@@ -1,4 +1,5 @@
 const taskContainer = document.querySelector(".task__container");
+const taskModal = document.querySelector(".task__modal__body");
 const imageurl = document.getElementById("imageurl");
 const taskTitle = document.getElementById("taskTitle");
 const taskType = document.getElementById("taskType");
@@ -9,7 +10,7 @@ let globalStore = [];
 const generateNewCard = (taskData) => {
     const newCard = `
         <div class="col-md-6 col-lg-4" id=${taskData.id}>
-            <div class="card">
+            <div class="card mb-4">
                 <div class="card-header d-flex justify-content-end gap-2">
                     <button type="button" class="btn btn-outline-success" id=${taskData.id} onClick="editTask.apply(this, arguments)">
                         <i class="fas fa-pencil-alt"></i>
@@ -18,20 +19,45 @@ const generateNewCard = (taskData) => {
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
-                <img src=${taskData.imageUrl} class="card-img-top" alt="...">
+                
+                <img src=${taskData.imageUrl || `https://images.unsplash.com/photo-1572214350916-571eac7bfced?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=755&q=80`} class="card-img-top" alt="card image">
                 <div class="card-body">
-                    <h5 class="card-title">${taskData.taskTitle}</h5>
+                    <h4 class="card-title fw-bold">${taskData.taskTitle}</h4>
                     <p class="card-text">${taskData.taskDescription}</p>
                     <a href="#" class="btn btn-primary">${taskData.taskType}</a>
                 </div>
                 <div class="card-footer">
-                    <button type="button" id=${taskData.id} class="btn btn-outline-primary float-end">Open Task</button>
+                    <button type="button" id=${taskData.id} 
+                    class="btn btn-outline-primary float-end"
+                    data-bs-toggle="modal"
+                    data-bs-target="#showTask"
+                    onclick="openTask.apply(this, arguments)"
+                    >
+                    Open Task
+                    </button>
                 </div>
             </div>
         </div>
     `;
     return newCard;
 }
+
+const htmlModalContent = ({ id, taskTitle, taskDescription, imageUrl }) => {
+    const date = new Date(parseInt(id));
+    return ` <div id=${id}>
+    <img
+    src=${imageUrl ||
+        `https://images.unsplash.com/photo-1572214350916-571eac7bfced?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=755&q=80`
+        }
+    alt="bg image"
+    class="img-fluid place__holder__image mb-3"
+    />
+    <h5 class="text-sm text-muted fw-bold">Created on ${date.toDateString()}</h5>
+    <h2 class="my-3">${taskTitle}</h2>
+    <p class="lead">
+    ${taskDescription}
+    </p></div>`;
+};
 
 const loadInitialCardData = () => {
     const getCardData = localStorage.getItem("tasky");
@@ -153,3 +179,10 @@ const saveEdit = (e) => {
     submitButton.setAttribute("data-bs-target", "#showTask");
     submitButton.innerHTML = "Open Task";
 }
+
+const openTask = (e) => {
+    if (!e) e = window.event;
+
+    const getTask = globalStore.filter(({ id }) => id === e.target.id);
+    taskModal.innerHTML = htmlModalContent(getTask[0]);
+};
