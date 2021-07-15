@@ -4,7 +4,7 @@ const taskTitle = document.getElementById("taskTitle");
 const taskType = document.getElementById("taskType");
 const taskDescription = document.getElementById("taskDescription");
 
-const globalStore = [];
+let globalStore = [];
 
 const generateNewCard = (taskData) => {
     const newCard = `
@@ -14,7 +14,7 @@ const generateNewCard = (taskData) => {
                     <button type="button" class="btn btn-outline-success">
                         <i class="fas fa-pencil-alt"></i>
                     </button>
-                    <button type="button" class="btn btn-outline-danger">
+                    <button type="button" class="btn btn-outline-danger" id=${taskData.id} onClick="deleteTask.apply(this, arguments)">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
@@ -59,4 +59,23 @@ const saveChanges = () => {
     globalStore.push(taskData);
 
     localStorage.setItem("tasky", JSON.stringify({ cards: globalStore }));
+}
+
+const deleteTask = (e) => {
+    if (!e) e = window.event;
+
+    const targetId = e.target.id;
+    const tagname = e.target.tagName;
+
+    globalStore = globalStore.filter((cardObject) => (cardObject.id) !== targetId);
+    localStorage.setItem("tasky", JSON.stringify({ cards: globalStore }));
+
+    if (tagname === "BUTTON") {
+        return e.target.parentNode.parentNode.parentNode.parentNode.removeChild(
+            e.target.parentNode.parentNode.parentNode
+        );
+    }
+    return e.target.parentNode.parentNode.parentNode.parentNode.parentNode.removeChild(
+        e.target.parentNode.parentNode.parentNode.parentNode
+    );
 }
