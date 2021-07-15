@@ -167,7 +167,6 @@ const saveEdit = (e) => {
         }
         return task;
     });
-    console.log(globalStore);
 
     localStorage.setItem("tasky", JSON.stringify({ cards: globalStore }));
 
@@ -186,3 +185,17 @@ const openTask = (e) => {
     const getTask = globalStore.filter(({ id }) => id === e.target.id);
     taskModal.innerHTML = htmlModalContent(getTask[0]);
 };
+
+const searchTask = (e) => {
+    if (!e) e = window.event;
+
+    while (taskContainer.firstChild) {
+        taskContainer.removeChild(taskContainer.firstChild);
+    }
+
+    const resultData = globalStore.filter(({ taskTitle }) => taskTitle.toLowerCase().includes(e.target.value.toLowerCase()))
+
+    resultData.map((cardData) => {
+        taskContainer.insertAdjacentHTML("beforeend", generateNewCard(cardData));
+    });
+}
